@@ -1,0 +1,25 @@
+//Helpers
+//This packages help make design easier and faster
+@import "./helpers/functions";
+@import "./helpers/mediaqueries";
+@import "./helpers/mixins";
+@import "./helpers/variables";
+
+// BASE
+//The base folder holds boilerplate content. 
+// It holds the styles every page of your site should receive.
+@import "./base/colors";
+@import "./base/fonts";
+@import "./base/normalize";
+
+//COMPONENTS
+//This makes up the components of the projects
+@import "./components/buttons";
+
+//LAYOUT
+//It holds the basic layout
+@import "./layout/screen";
+
+//Vendor
+//It holds packages from other vendor E.G bootstrap CSS
+@import "./vendor/andy-mixins";
