@@ -1,5 +1,5 @@
 body {
-  background-color: aqua; }
+  background-color: #529fa4; }
 
 @font-face {
   font-family: "GloriaHallelujah";
@@ -362,7 +362,16 @@ th {
 .screen {
   width: 60%;
   height: 30em;
-  background-color: black;
-  -webkit-transform: translate(32%, 20%); }
+  background-color: #ff6868;
+  transform: translate(32%, 20%); }
+  .screen .paddle {
+    background-color: #669eff;
+    width: 20%;
+    height: 20px;
+    position: relative;
+    top: 28.5em;
+    left: 30%;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.4), -2px -2px 2px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 5px; }
 
 /*# sourceMappingURL=main.css.map */

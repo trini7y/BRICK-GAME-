@@ -1,6 +1,18 @@
 .screen{
 	width:60%;
 	height:30em;
-	background-color:black;
-	-webkit-transform:translate(32%, 20%);
-}
+	background-color:rgb(255, 104, 104);
+	transform:translate(32%, 20%);
+
+	.paddle{
+		background-color:$paddle;
+		width:20%;
+		height:20px;
+		position:relative;
+		top:28.5em;
+		left:30%;
+		box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .4),
+		-2px -2px 2px 1px rgba(0, 0, 0, .4);
+		border-radius:5px;
+	}
+}	
