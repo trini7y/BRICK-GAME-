@@ -1,18 +1,14 @@
+body{
+	// overflow:hidden;
+}
 .screen{
-	width:60%;
-	height:30em;
-	background-color:rgb(255, 104, 104);
-	transform:translate(32%, 20%);
+	border:1px solid black;
 
 	.paddle{
 		background-color:$paddle;
-		width:20%;
-		height:20px;
-		position:relative;
-		top:28.5em;
-		left:30%;
-		box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .4),
-		-2px -2px 2px 1px rgba(0, 0, 0, .4);
+		border:1px solid black;
+		box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .5),
+		-1px -1px 1px 1px rgba(0, 0, 0, .5);
 		border-radius:5px;
 	}
-}	
+}
