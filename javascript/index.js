@@ -3,31 +3,41 @@ var ctx = canvas.getContext("2d");
 
 canvas.width = 1000;
 canvas.height = 500;
-var x = 450;
-var y = 480;
-//The paddle
-ctx.fillStyle = "rgb(0,0,0)";
-ctx.fillRect(x, y, 100, 20);
 
-window.addEventListener("keydown", moveLeft, false);
-function moveLeft(key){
-		if (key.keyCode == "37"){
-			x += 1;
-		}
-}
-function controlPaddle(minus_x, plus_x){
-	this.minus_x = minus_x;
-	this.plus_x = plus_x;
+x = 480;
+y = 450;
+dx = 6;
+function controlPaddle(x, y, dx){
+	this.x = x;
+	this.y = y;
+	this.dx = dx;
 
-	this.moveLeft = function(){
-		window.addEventListener("keydown", moveLeft, false);
-		function moveLeft(key){
+	this.init = function(){
+		clearW= 1000;
+		clearH=500;
+		window.addEventListener("keydown", update, false);
+		render();
+		
+	}
+	// this.init();
+	function update(key){
 			if(key.keyCode == "37"){
-				this.minus_x -= 1;
-			}
+				this.x -= this.dx;
+				console.log(this.x);
 		}
+			if (key.keyCode == "39"){
+				this.x += this.dx;
+				// this.render();
+				console.log(this.x);
+		}
+		render();
+	}
+  	 function render(){
+		ctx.clearRect(0, 0, clearW , clearH);
+		ctx.fillStyle = "rgb(0,0,0)";
+		ctx.fillRect(this.x, this.y, 100, 20);
 	}
 }
-var move = new controlPaddle(10, 10);
 
-move.moveLeft();
+var move_paddle = new controlPaddle(x, y, dx);
+move_paddle.init();
