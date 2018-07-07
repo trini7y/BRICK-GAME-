@@ -1,12 +1,14 @@
 var canvas = document.querySelector('#screen');
 var ctx = canvas.getContext("2d");
 
-canvas.width = 1000;
-canvas.height = 500;
+var width = canvas.width;
+var height = canvas.height
 
-var clearW= 1000;
-var clearH=500;
-
+// var x_Ball = 100;
+// var y_Ball = 100;
+// var dx_Ball = 1;
+// var dy_Ball = 1;
+// var radius = 10;
 
 function controlPaddle(x, y, dx){
 	this.xAxis = x;
@@ -15,8 +17,7 @@ function controlPaddle(x, y, dx){
 	this.init = function(){
 		window.addEventListener("keydown", update, false);
 		render();
-		// checkLocation();
-		
+		// checkLocation();	
 	}
 	function update(key){
 		if(key.keyCode == "37"){
@@ -29,10 +30,11 @@ function controlPaddle(x, y, dx){
 		}
 		// checkLocation();
 		render();
+
 	}
   	function render(){
   		ctx.beginPath();
-		ctx.clearRect(0, 0, clearW , clearH);
+  		ctx.clearRect(0, 0, width, height);
 		ctx.fillStyle = "rgb(0,0,0)";
 		ctx.fillRect(this.xAxis, this.yAxis, 100, 20);
 		ctx.closePath();
@@ -43,16 +45,15 @@ function controlPaddle(x, y, dx){
 	//   	}
 	// }
 	this.init()
+	return
 }
 
-// move_paddle.init();
 
-
-function controBall(x_, y_, dx_, dy, radius){
-	this.x = x_;
-	this.y = y_;
-	this.dx = dx_;
-	this.dy = dy;
+function controlBall(x_Ball, y_Ball, dx_Ball, dy_Ball, radius){
+	this.x = x_Ball;
+	this.y = y_Ball;
+	this.dx = dx_Ball;
+	this.dy = dy_Ball;
 	this.radius = radius;
 
 	this.moveBall = function(){
@@ -66,12 +67,11 @@ function controBall(x_, y_, dx_, dy, radius){
 	}
 	 function animate(){
 		requestAnimationFrame(animate);
-		ctx.clearRect(0, 0, 1000, 500);
 		this.moveBall();
-		if(this.x + this.radius < 0 || this.x - this.radius > clearW){
+		if(this.x + this.radius < 0 || this.x - this.radius > width){
 			this.dx =  -this.dx;
 		}
-		if(this.y + this.radius < 0 || this.y - this.radius > clearH){
+		if(this.y + this.radius < 0 || this.y - this.radius > height){
 			this.dy = -this.dy;
 		}
 		this.x += this.dx;
@@ -79,6 +79,11 @@ function controBall(x_, y_, dx_, dy, radius){
 	}
 	animate();
 
+	return
 }
-controBall(100, 100, 1, 1, 10);
-controlPaddle(480, 480, 6);
+function clear(){
+	ctx.clearRect(0, 0, width, height);
+	controlBall(100, 100, 1, 1, 10);
+	controlPaddle(480, 480, 6);
+}
+clear()
