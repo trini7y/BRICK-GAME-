@@ -2,72 +2,64 @@ var canvas = document.querySelector('#screen');
 var ctx = canvas.getContext("2d");
 
 var width = canvas.width;
-var height = canvas.height
+var height = canvas.height;
 
-// var x_Ball = 100;
-// var y_Ball = 100;
-// var dx_Ball = 1;
-// var dy_Ball = 1;
-// var radius = 10;
+var keys = {};
+var hue = 0;
+var dx = 0;
+var dTarget = 0;
 
-function controlPaddle(x, y, dx){
+document.onkeydown = ({ keyCode }) => {
+	keys[keyCode] = 1;
+};
+
+document.onkeyup = ({ keyCode }) => {
+	keys[keyCode] = 0;
+};
+
+function Paddle(x, y, dx){
 	this.xAxis = x;
 	this.yAxis = y;
 	this.dxAxis = dx;
-	this.init = function(){
-		window.addEventListener("keydown", update, false);
-		render();
-		// checkLocation();	
-	}
-	function update(key){
-		if(key.keyCode == "37"){
-				this.xAxis -= this.dxAxis;
-				console.log(this.xAxis);
-		}
-		if (key.keyCode == "39"){
-				this.xAxis += this.dxAxis;
-				console.log(this.xAxis);
-		}
-		// checkLocation();
-		render();
 
+	this.update = function(key){
+		if(keys["37"]){
+				this.xAxis -= this.dxAxis;
+				dTarget = -1;
+		}
+		if (keys["39"]){
+				this.xAxis += this.dxAxis;
+				dTarget = 1;
+		}
 	}
-  	function render(){
+
+  	this.render = function(){
   		ctx.beginPath();
-  		ctx.clearRect(0, 0, width, height);
 		ctx.fillStyle = "rgb(0,0,0)";
 		ctx.fillRect(this.xAxis, this.yAxis, 100, 20);
 		ctx.closePath();
-	}
-	// function checkLocation(){
-	//   	if(this.x < 0 || this.x > clearW - 106){
-	//   		this.dx = 0;
-	//   	}
-	// }
-	this.init()
-	return
+	}				
 }
 
 
-function controlBall(x_Ball, y_Ball, dx_Ball, dy_Ball, radius){
+function Ball(x_Ball, y_Ball, dx_Ball, dy_Ball, radius){
 	this.x = x_Ball;
 	this.y = y_Ball;
 	this.dx = dx_Ball;
 	this.dy = dy_Ball;
 	this.radius = radius;
 
-	this.moveBall = function(){
+	this.render = function(){
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		ctx.strokeStyle = "blue";
-		ctx.fillStyle = "#000";
+		ctx.fillStyle = `hsla(${360 - hue}, 100%, 50%, 1)`;
 		ctx.stroke();
 		ctx.fill();
 		ctx.closePath();
-	}
-	 function animate(){
-		requestAnimationFrame(animate);
-		this.moveBall();
+	};
+	
+	this.update = function(){
 		if(this.x + this.radius < 0 || this.x - this.radius > width){
 			this.dx =  -this.dx;
 		}
@@ -77,13 +69,52 @@ function controlBall(x_Ball, y_Ball, dx_Ball, dy_Ball, radius){
 		this.x += this.dx;
 		this.y += this.dy;
 	}
-	animate();
+}
 
-	return
+function render(){
+	ctx.fillStyle = `hsla(${hue}, 100%, 100%, 0.4)`;
+	ctx.fillRect(0,0, width, height);
+
+	ctx.fillStyle = "rgba(50,50,50, 0.2)";
+	ctx.beginPath();
+	ctx.arc(width/2, height/2, 15, 0, 2 * Math.PI, false);
+	ctx.fill();
+
+	ctx.fillStyle = "rgba(255,255,255,0.2)";
+	ctx.beginPath();
+	ctx.arc(width/2, height/2, 8, 0, 2 * Math.PI, false);
+	ctx.fill();
+
+	paddle.render();
+	ball.render();
 }
-function clear(){
-	ctx.clearRect(0, 0, width, height);
-	controlBall(100, 100, 1, 1, 10);
-	controlPaddle(480, 480, 6);
+
+function update(){
+	ball.update();
+	paddle.update();
+
+	if (ball.y + ball.radius > paddle.yAxis) {
+		if (ball.x + ball.radius > paddle.xAxis &&
+			ball.x - ball.radius < paddle.xAxis + 100) {
+			ball.dy *= -1;
+			ball.y = paddle.yAxis - ball.radius;
+		}
+	}
+
 }
-clear()
+
+function loop() {
+	update();
+	render();
+
+	dx += (dTarget - dx) * 0.05;
+	dTarget *= 0.05;
+
+	canvas.style.transform = `rotateY(${dx * 30}deg) rotateX(${dx * 20}deg)`;
+
+	requestAnimationFrame(loop);
+}
+let ball = new Ball(100, 100, 3, 3, 13);
+let paddle = new Paddle(480, 480, 6);
+
+requestAnimationFrame(loop);
